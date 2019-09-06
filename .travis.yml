@@ -17,8 +17,8 @@ after_script:
   - cd ./public
   - git init
   # user.name 和 user.email 让 travis 能登录你的 github
-  - git config user.name "dkvirus"
-  - git config user.email "xxxxxx@qq.com"
+  - git config user.name "puppetsheep"
+  - git config user.email "puppetsheep@foxmail.com"
   - git add .
   - git commit -m "docs:update articles"
   # GH_TOKEN 为你的 github 允许 travis 访问生成的凭证
@@ -29,8 +29,8 @@ after_script:
 branches:
   only:
     # 设置监控分支，当 develop 分支代码变化时，执行这个程序
-    - develop
+    - hexo
 env:
   global:
     # 定义往哪个仓库推送代码，注意事项见下面
-    - GH_REF: github.com/dkvirus/dkvirus.github.io.git
+    - GH_REF: github.com/puppetsheep/puppetsheep.github.io.git

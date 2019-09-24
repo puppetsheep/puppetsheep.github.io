@@ -9,7 +9,6 @@ mathjax: true
 copyright: true
 description:
  - 主要写的是烧脑的一些难题
-top: 100
 ---
 {% cq %}
 不必太纠结于当下，也不必太忧虑未来，

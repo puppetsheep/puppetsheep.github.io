@@ -110,3 +110,122 @@ var floatNum2 = 10.0;      // 整数——解析为10
 var floatNum = 3.125e7;  // 等于31250000
 ```
 - <div class="note danger"><p>0.1加0.2的结果不是0.3,因此，永远不要测试某个特定的浮点数值</p></div>
+- <div class="note default no-icon"><p>NaN，即非数值（Not a Number）是一个特殊的数值，这个数值用于表示一个本来要返回数值的操作数未返回数值的情况（这样就不会抛出错误了）。任何数值除以0会返回NaN</p></div>
+- <div class="note danger no-icon"><p>首先，任何涉及NaN的操作（例如NaN/10）都会返回NaN。其次，NaN与任何值都不相等，包括NaN本身。</p></div>
+- <div class="note danger no-icon"><p>针对以上特点，定义了isNaN()函数。在基于对象调用isNaN()函数时，会首先调用对象的valueOf()方法，然后确定该方法返回的值是否可以转换为数值。如果不能，则基于这个返回值再调用toString()方法，再测试返回值。</p></div>
+- Number()
+```javascript
+var num1 = Number("Hello world!");      //NaN 
+var num2 = Number("");                  //0 
+var num3 = Number("000011");            //11 
+var num4 = Number(true);                //1
+```
+- parseInt()
+```javascript
+var num1 = parseInt("1234blue");    // 1234 
+var num2 = parseInt("");            // NaN 
+var num3 = parseInt("0xA");         // 10（十六进制数）
+var num4 = parseInt(22.5);          // 22 
+var num5 = parseInt("070");         // 56（八进制数）
+var num6 = parseInt("70");          // 70（十进制数）
+var num7 = parseInt("0xf");         // 15（十六进制数）
+***
+var num1 = parseInt("10", 2);      //2  （按二进制解析）
+var num2 = parseInt("10", 8);      //8  （按八进制解析）
+var num3 = parseInt("10", 10);     //10 （按十进制解析）
+var num4 = parseInt("10", 16);     //16 （按十六进制解析）
+```
+- parseFloat()
+```javascript
+//parseFloat()只解析十进制值
+var num1 = parseFloat("1234blue");          //1234 （整数）
+var num2 = parseFloat("0xA");               //0 
+var num3 = parseFloat("22.5");              //22.5 
+var num4 = parseFloat("22.34.5");           //22.34 
+var num5 = parseFloat("0908.5");            //908.5 
+var num6 = parseFloat("3.125e7");           //31250000
+```
+
+### String类型
+- <div class="note info no-icon"><p>任何字符串的长度都可以通过访问其length属性取得</p></div>
+- <div class="note info no-icon"><p>字符串一旦创建，它们的值就不能改变。只能先销毁，后填充。</p></div>
+#### toString()方法
+```javascript
+var age = 11; 
+var ageAsString = age.toString();         // 字符串"11" 
+var found = true; 
+var foundAsString = found.toString();     // 字符串"true"
+//****可以用于进制转换**********
+var num = 10; 
+alert(num.toString());         // "10" 
+alert(num.toString(2));        // "1010" 
+alert(num.toString(8));        // "12" 
+alert(num.toString(10));       // "10" 
+alert(num.toString(16));       // "a"
+//*****也会直接转换为返回结果*****
+var value1 = 10; 
+var value2 = true; 
+var value3 = null; 
+var value4; 
+alert(String(value1));     // "10" 
+alert(String(value2));     // "true" 
+alert(String(value3));     // "null" 
+alert(String(value4));     // "undefined"
+```
+### Object类型
+- <div class="note info "><p>对象，其实就是一组数据和功能的集合，需要new一个(你懂的)</p></div>
+```javascript
+var o = new Object();
+var o = new Object; // 有效，但不推荐省略圆括号
+```
+#### Object的每个实例都具有下列属性和方法
+- constructor：保存着用于创建当前对象的函数。对于前面的例子而言，构造函数（constructor）就是Object()。
+- hasOwnProperty(propertyName)：用于检查给定的属性在当前对象实例中（而不是在实例的原型中）是否存在。其中，作为参数的属性名（propertyName）必须以字符串形式指定（例如：o.hasOwnProperty("name")）。
+- isPrototypeOf(object)：用于检查传入的对象是否是传入对象的原型。
+- propertyIsEnumerable(propertyName)：用于检查给定的属性是否能够使用for-in语句来枚举。与hasOwnProperty()方法一样，作为参数的属性名必须以字符串形式指定。
+- toLocaleString()：返回对象的字符串表示，该字符串与执行环境的地区对应。
+- toString()：返回对象的字符串表示。
+- valueOf()：返回对象的字符串、数值或布尔值表示。通常与toString()方法的返回值相同。
+
+### 关于javascript的趣向
+```javascript
+//可以直接f12尝试一下
+> typeof(NaN)
+"number"
+> 99999999999
+99999999999
+> 9999999999999999999
+10000000000000000000
+> 0.5+0.1==0.6
+true
+> 0.1+0.2==0.3
+false
+> Math.max()
+-Infinity
+> Math.min()
+Infinity
+> []+[]
+""
+> []+{}
+"[object Object]"
+> {}+[]
+0
+> true+true+true===3
+true
+> true-true
+0
+> true==1
+true
+> true===1
+false
+> (!+[]+[]+![]).length
+9
+> 9+"1"
+"91"
+> 91-"1"
+90
+> []==0
+true
+> (!(~+[])+{})[--[~+""][+[]]*[~+[]] + ~~!+[]]+({}+[])[[~!+[]]*~+[]]
+"sb"
+```

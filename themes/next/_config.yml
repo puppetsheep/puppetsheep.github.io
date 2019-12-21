@@ -34,7 +34,7 @@ footer:
     version: false
   beian:
     enable: true
-    icp: 浙ICP备17046103号
+    icp: 浙ICP备17046103-2
     
 creative_commons:
   license: by-nc-sa

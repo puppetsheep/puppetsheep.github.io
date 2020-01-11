@@ -1,5 +1,5 @@
-# puppetsheep.github.io
 ## [灵魂只应独行(puppetsheep.cn)](https://puppetsheep.cn) 
+[![Build Status](https://www.travis-ci.org/puppetsheep/puppetsheep.github.io.svg?branch=master)](https://www.travis-ci.org/puppetsheep/puppetsheep.github.io)
 ### 友链添加：
 - 名称：灵魂只应独行
 - 地址：https://puppetsheep.cn

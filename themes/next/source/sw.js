@@ -1,6 +1,6 @@
 
-var cacheName = 'bs-0-0-9'
-var apiCacheName = 'api-0-0-9'
+var cacheName = 'bs-0-1-0'
+var apiCacheName = 'api-0-1-0'
 
 var cacheFiles = [
   '/',

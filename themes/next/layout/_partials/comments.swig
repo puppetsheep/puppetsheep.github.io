@@ -1,6 +1,6 @@
 {% if page.comments %}
 
-	<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min.js"></script>
   <div class="comments" id="comments"></div>
     <script src='//cdn.dode.top/Hitalk.min.js'></script>
    <script type="text/javascript">

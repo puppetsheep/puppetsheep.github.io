@@ -130,10 +130,12 @@ var OriginTitile = document.title;
 var titleTime;
 document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
-        document.title = ' (▼へ▼メ)你不理我了！';
+		$('[rel="icon"]').attr('href', "/images/TEP.ico");
+        document.title = 'Free Porn Videos & Sex Movies - Porno, XXX, Porn Tube and Pussy Porn';
         clearTimeout(titleTime);
     }
     else {
+		$('[rel="icon"]').attr('href', "/favicon.ico");
         document.title = ' ヾ(◍°∇°◍)ﾉﾞ欢迎回来 ' + OriginTitile;
         titleTime = setTimeout(function () {
             document.title = OriginTitile;

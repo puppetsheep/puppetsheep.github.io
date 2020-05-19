@@ -1,9 +1,10 @@
 
-var cacheName = 'bs-0-1-0'
-var apiCacheName = 'api-0-1-0'
+var cacheName = 'bs-0-1-1'
+var apiCacheName = 'api-0-1-1'
 
 var cacheFiles = [
   '/',
+  '/images/TEP.ico',
   '/images/favicon.ico',
   '/css/main.css',
   '/js/src/utils.js',

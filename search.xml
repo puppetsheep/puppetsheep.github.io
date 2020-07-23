@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>数组去重的一些方法</title>
+    <url>/2020/07/23/arraydeduplication/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="使用JavaScript进行数组去重的方法有很多，这里就列举一些较为常用的方法，以作参考。"><a href="#使用JavaScript进行数组去重的方法有很多，这里就列举一些较为常用的方法，以作参考。" class="headerlink" title="使用JavaScript进行数组去重的方法有很多，这里就列举一些较为常用的方法，以作参考。"></a>使用JavaScript进行数组去重的方法有很多，这里就列举一些较为常用的方法，以作参考。</h2><a id="more"></a>
+<h2 id="1、双for循环"><a href="#1、双for循环" class="headerlink" title="1、双for循环"></a>1、双for循环</h2><blockquote>
+<p><code>不推荐使用</code>依次遍历数组中的每一项,拿当前项和其”后面”的每一项进行比较,如果后面中有和他相同的,则说明这项是重复的,我们把后面中重复的这一项删除掉即可</p>
+</blockquote>
+<p></p><div class="note warning"><p>多次循环，性能不好</p></div><br><figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> array = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">1</span>,<span class="number">9</span>,<span class="number">1</span>,<span class="number">9</span>,<span class="number">8</span>,<span class="number">1</span>,<span class="number">0</span>]</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; array.length<span class="number">-1</span>; i++) {</span><br><span class="line">    <span class="keyword">const</span> item = array[i];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> j = i + <span class="number">1</span> ;j &lt; array.length; j++){</span><br><span class="line">        <span class="keyword">if</span>(item === array[j]){</span><br><span class="line">            array[j]=array[array.length<span class="number">-1</span>]</span><br><span class="line">            array.length--</span><br><span class="line">            j--</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="built_in">console</span>.log(array) <span class="comment">//[1, 0, 4, 5, 8, 9]</span></span><br></pre></td></tr></tbody></table></figure><p></p>
+<h2 id="2、对象的键值对方式"><a href="#2、对象的键值对方式" class="headerlink" title="2、对象的键值对方式"></a>2、对象的键值对方式</h2><blockquote>
+<p>利用对象中属性名不能重复的特点,先建立-个空对象,然后依次循环数组中的每一项,把此项作为obj对象的属性名和属性值,在添加的时候如果这个属性名对应的值已经存在,说明此项重复,删除掉此项</p>
+</blockquote>
+<p></p><div class="note info"><p>只有一个循环，性能较好</p></div><p></p>
+<p></p><div class="note warning"><p>如果数组中存在数字<code>10</code>和字符串<code>'10'</code>,则也会认为是重复的（对象中的属性名是数字和字符串没什么区别）</p><p>如果数组中出现对象则存在问题(因为对象的属性名不能是对象，遇到会转换成字符串)</p><p>数组中的值如果是<code>undefined</code>可能也会出现问题</p></div><br><figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> array = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">1</span>,<span class="number">9</span>,<span class="number">1</span>,<span class="number">9</span>,<span class="number">8</span>,<span class="number">1</span>,<span class="number">0</span>]</span><br><span class="line"><span class="keyword">let</span> obj ={}</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i&lt;array.length;i++) {</span><br><span class="line">    <span class="keyword">let</span> item = array[i]</span><br><span class="line">    <span class="keyword">if</span>(obj[item] !== <span class="literal">undefined</span>){</span><br><span class="line">        array[i] = array[array.length <span class="number">-1</span>]</span><br><span class="line">        array.length--</span><br><span class="line">        i--</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    }</span><br><span class="line">    obj[item] = item</span><br><span class="line">}</span><br><span class="line"><span class="built_in">console</span>.log(array) <span class="comment">//[1, 0, 4, 5, 8, 9]</span></span><br></pre></td></tr></tbody></table></figure><p></p>
+<h2 id="3、indexOf检测的方式"><a href="#3、indexOf检测的方式" class="headerlink" title="3、indexOf检测的方式"></a>3、indexOf检测的方式</h2><blockquote>
+<p>创建一个新数组，遍历原数组，如果新数组中没有那一项，就push进去<br></p><figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> array = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">0</span>]</span><br><span class="line"><span class="keyword">let</span> newarr = []</span><br><span class="line"><span class="keyword">for</span>(i <span class="keyword">in</span> array){</span><br><span class="line">    <span class="keyword">let</span> item = array[i]</span><br><span class="line">    <span class="keyword">if</span>(newarr.indexOf(item) == <span class="number">-1</span>)</span><br><span class="line">    newarr.push(item)</span><br><span class="line">}</span><br><span class="line"><span class="built_in">console</span>.log(newarr) <span class="comment">//[1, 4, 5, 9, 8, 0]</span></span><br></pre></td></tr></tbody></table></figure><p></p>
+</blockquote>
+<h2 id="4、Set"><a href="#4、Set" class="headerlink" title="4、Set"></a>4、Set</h2><blockquote>
+<p>ES6 提供了新的数据结构 Set。它类似于数组，但是成员的值都是唯一的，没有重复的值。<br></p><figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> array = [<span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">0</span>]</span><br><span class="line"><span class="built_in">console</span>.log([...new <span class="built_in">Set</span>(array)]) <span class="comment">//[1, 4, 5, 9, 8, 0]</span></span><br></pre></td></tr></tbody></table></figure><p></p>
+</blockquote>
+<blockquote>
+<p>也可以通过Set实现两个数组的交并差集</p>
+</blockquote>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);</span><br><span class="line"><span class="keyword">let</span> b = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>]);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 并集</span></span><br><span class="line"><span class="keyword">let</span> union = <span class="keyword">new</span> <span class="built_in">Set</span>([...a, ...b]);</span><br><span class="line"><span class="comment">// Set {1, 2, 3, 4}</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 交集</span></span><br><span class="line"><span class="keyword">let</span> intersect = <span class="keyword">new</span> <span class="built_in">Set</span>([...a].filter(<span class="function"><span class="params">x</span> =&gt;</span> b.has(x)));</span><br><span class="line"><span class="comment">// set {2, 3}</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// （a 相对于 b 的）差集</span></span><br><span class="line"><span class="keyword">let</span> difference = <span class="keyword">new</span> <span class="built_in">Set</span>([...a].filter(<span class="function"><span class="params">x</span> =&gt;</span> !b.has(x)));</span><br><span class="line"><span class="comment">// Set {1}</span></span><br></pre></td></tr></tbody></table></figure><script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>微信小程序停止维护</title>
+    <url>/2020/07/20/wechat/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="校园应用"><a href="#校园应用" class="headerlink" title="校园应用"></a>校园应用</h2><ul>
+<li>主要提供每日一图一句，次要提供历史记录与原图下载。</li>
+<li>因性能问题与图源问题，暂时无法支持流畅加载。</li>
+<li>图源来自于pixiv，且无法通过爬虫(爬下来不知道是不是涩图，容易炸审核）</li>
+<li>性能问题由图的问题产生。</li>
+<li>现每日流量大约一两百，日新增一百。截至目前，共有<code>1.1万</code>以上的<code>uv</code>。</li>
+<li>现已提供开源：<a href="https://github.com/puppetsheep/SoulBUG" target="_blank" rel="noopener">https://github.com/puppetsheep/SoulBUG</a><a id="more"></a>
+</li>
+</ul>
+<h2 id="考点笔记"><a href="#考点笔记" class="headerlink" title="考点笔记"></a>考点笔记</h2><ul>
+<li>与校园应用类似，主体功能已整合入校园应用。</li>
+<li>主要是用来展示一些考点的笔记。</li>
+<li>容易炸审核（因为近现代史纲要炸了两次审核），估计我再放马原就彻底炸了。</li>
+<li>小程序没有数学公式支持，我也不想造轮子（不会）。</li>
+<li>由于不依赖动态更新，目前还能使用。</li>
+<li>主要有用的就是<code>中国传统色</code>对比功能了。</li>
+<li>现已提供开源：<a href="https://github.com/puppetsheep/school-apps" target="_blank" rel="noopener">https://github.com/puppetsheep/school-apps</a></li>
+</ul>
+<h2 id="公羊阅读"><a href="#公羊阅读" class="headerlink" title="公羊阅读"></a>公羊阅读</h2><ul>
+<li>一个由<code>dkvirus</code>所开发的一个原生小程序，因不满于UI设计，于是fork下来重做了UI，并修改部分交互内容。</li>
+<li>因涉及在线阅读，也就无法通过审核，而我的重制版也无法展示。</li>
+<li>真的好奇想看重制版，也可以联系我，我加一下小程序体验者。</li>
+<li>项目地址<a href="https://github.com/py-novel/client_mobile_miniapp" target="_blank" rel="noopener">https://github.com/py-novel/client_mobile_miniapp</a></li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>以上三个小程序项目暂停维护支持，因为我目前在开发另一个开源项目，也需要找到blog的替代品。</li>
+<li>目前的blog版本较低，也常容易出问题，但是更新新版的话，重配UI与大量插件，也很费时间精力。</li>
+<li>也可能不再使用markdown支持（我自己都不信）</li>
+<li>UI将整体改好看（确信）</li>
+<li>也将适合增加交互效果</li>
+</ul>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>WEB</tag>
+        <tag>CSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PC端网页人机交互优化-鼠标</title>
+    <url>/2020/07/03/renji/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><map onclick="javascript:document.body.style.cursor='crosshair'">十字线</map><script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>WEB</tag>
+        <tag>CSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>离站替换ico与title(恶搞向技术指南)</title>
+    <url>/2020/05/21/joke/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><ul>
+<li><div class="note info no-icon"><p>一次突发奇想，我能不能搞点有趣的。例如说离站时自动变成P站。如本站。</p></div><a id="more"></a>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line"><span class="keyword">var</span> OriginTitile = <span class="built_in">document</span>.title;</span><br><span class="line"><span class="keyword">var</span> titleTime;</span><br><span class="line"><span class="built_in">document</span>.addEventListener(<span class="string">'visibilitychange'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>{</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">document</span>.hidden) {</span><br><span class="line">		$(<span class="string">'[rel="icon"]'</span>).attr(<span class="string">'href'</span>, <span class="string">"/images/TEP.ico"</span>);</span><br><span class="line">        <span class="built_in">document</span>.title = <span class="string">'Free Porn Videos &amp; Sex Movies - Porno, XXX, Porn Tube and Pussy Porn'</span>;</span><br><span class="line">        clearTimeout(titleTime);</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">else</span> {</span><br><span class="line">		$(<span class="string">'[rel="icon"]'</span>).attr(<span class="string">'href'</span>, <span class="string">"/favicon.ico"</span>);</span><br><span class="line">        <span class="built_in">document</span>.title = <span class="string">' ヾ(◍°∇°◍)ﾉﾞ欢迎回来 '</span> + OriginTitile;</span><br><span class="line">        titleTime = setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>{</span><br><span class="line">            <span class="built_in">document</span>.title = OriginTitile;</span><br><span class="line">        }, <span class="number">2000</span>);</span><br><span class="line">    }</span><br><span class="line">});</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<div class="note danger no-icon"><p>图标和title是让朋友帮我找的，因为我确实没法科学上网。</p></div>
+
+
+
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>WEB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>微信小程序前端实现日期自动化</title>
+    <url>/2020/05/21/autodate/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><blockquote>
+<p>json格式被组件所限制，再通过前端的操作方式去实现同接口多页面应用。<br><a id="more"></a></p>
+<ul>
+<li>json格式如下<figure class="highlight json"><table><tbody><tr><td class="code"><pre><span class="line">[{</span><br><span class="line">    <span class="attr">"id"</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="attr">"name"</span>: <span class="string">"05"</span>,</span><br><span class="line">    <span class="attr">"day"</span>: [*长度为<span class="number">16</span>*] </span><br><span class="line">},{</span><br><span class="line">    <span class="attr">"id"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="attr">"name"</span>: <span class="string">"06"</span>,</span><br><span class="line">    <span class="attr">"day"</span>: [*长度为<span class="number">17</span>*] </span><br><span class="line">},{</span><br><span class="line">    <span class="attr">"id"</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">"name"</span>: <span class="string">"07"</span>,</span><br><span class="line">    <span class="attr">"day"</span>: [*长度为<span class="number">15</span>*] </span><br><span class="line">}]</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+</blockquote>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><blockquote>
+<p>解决思路：根据现在的时间与起点时间计算已经经过的天数，再对json中的对象截取，最后替代</p>
+</blockquote>
+<ul>
+<li>代码如下：<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line">exp(){</span><br><span class="line">    <span class="comment">//起点时间</span></span><br><span class="line">    <span class="keyword">let</span> BirthDay = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">"05/01/2020 00:00:00"</span>);</span><br><span class="line">    <span class="comment">//当前时间</span></span><br><span class="line">    <span class="keyword">let</span> today = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">    <span class="keyword">let</span> timeold = (today.getTime() - BirthDay.getTime());</span><br><span class="line">    <span class="keyword">let</span> sectimeold = timeold / <span class="number">1000</span></span><br><span class="line">    <span class="keyword">let</span> secondsold = <span class="built_in">Math</span>.floor(sectimeold);</span><br><span class="line">    <span class="keyword">let</span> msPerDay = <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span></span><br><span class="line">    <span class="keyword">let</span> e_daysold = timeold / msPerDay</span><br><span class="line">    <span class="comment">//已过天数</span></span><br><span class="line">    <span class="keyword">let</span> daysold = <span class="built_in">Math</span>.floor(e_daysold);</span><br><span class="line">    <span class="comment">// console.log(daysold, today, timeold, sectimeold, secondsold, msPerDay, e_daysold)</span></span><br><span class="line">    <span class="comment">//json已保存为this.data.section，此处在上一篇博客已说明方法</span></span><br><span class="line">    <span class="keyword">let</span> slice = <span class="keyword">this</span>.data.section;</span><br><span class="line">    <span class="keyword">let</span> daytemp = daysold+<span class="number">1</span>;</span><br><span class="line">    <span class="comment">//将超出部分改为null</span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    其实可以通过if判断直接去修改daytemp的值，</span></span><br><span class="line"><span class="comment">    daytemp=daytemp&gt;slice[i].day.length?daytemp-slice[i].day.length:daytemp</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; slice.length; i++) {</span><br><span class="line">      <span class="keyword">if</span> (daytemp &gt; slice[i].day.length) {</span><br><span class="line">        daytemp -= slice[i].day.length</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">      } <span class="keyword">else</span> {</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; slice[i].day.length; j++) {</span><br><span class="line">          daytemp -= <span class="number">1</span>;</span><br><span class="line">          <span class="keyword">if</span> (daytemp &lt; <span class="number">0</span>) {</span><br><span class="line">            slice[i].day[j] = <span class="literal">null</span></span><br><span class="line">          }</span><br><span class="line">        }</span><br><span class="line">        <span class="comment">//去重</span></span><br><span class="line">        slice[i].day = [...new <span class="built_in">Set</span>(slice[i].day)]</span><br><span class="line">        <span class="comment">//根据空值去尾</span></span><br><span class="line">        <span class="keyword">if</span> (slice[i].day[slice[i].day.length] == <span class="literal">null</span>) {</span><br><span class="line">          slice[i].day.pop()</span><br><span class="line">        }</span><br><span class="line">      }</span><br><span class="line">    }</span><br><span class="line">    <span class="comment">//去重</span></span><br><span class="line">    slice = [...new <span class="built_in">Set</span>(slice)]</span><br><span class="line">    <span class="comment">//根据空值去尾</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> k = slice.length; k &gt; <span class="number">0</span>; k--) {</span><br><span class="line">      <span class="keyword">if</span> (slice[k - <span class="number">1</span>].day.length == <span class="number">0</span>) {</span><br><span class="line">        slice.pop()</span><br><span class="line">      }</span><br><span class="line">    }</span><br><span class="line">    <span class="comment">//异步问题</span></span><br><span class="line">    <span class="keyword">let</span> temp = slice</span><br><span class="line">    <span class="comment">// console.log(temp)</span></span><br><span class="line">    <span class="keyword">this</span>.setData({</span><br><span class="line">      section: temp</span><br><span class="line">    })</span><br><span class="line">  }</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>由此，就能直接达到提前写好数据，后面自动根据日期显示，建议获取当前时间以服务器时间为准，便于控制。</p>
+</blockquote>
+<hr>
+<ul>
+<li>在其他页面则是直接使用当前时间的day<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (daytemp == <span class="number">0</span>) {</span><br><span class="line">     <span class="keyword">this</span>.setData({</span><br><span class="line">      content: slice[i].day[j]</span><br><span class="line">     })</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  }</span><br><span class="line"><span class="comment">//以及</span></span><br><span class="line"><span class="keyword">if</span>(daytemp==<span class="number">0</span>){</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>WEB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>微信小程序request异步问题解决方案</title>
+    <url>/2020/05/19/asynchronouscallback/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="问题简介"><a href="#问题简介" class="headerlink" title="问题简介"></a>问题简介</h2><ul>
+<li><div class="note info no-icon"><p>在<code>onLoad()</code>的同时又需要控制一个新定义的数组长度，此时会存在<code>wx.request()</code>的异步问题，即无法取到<code>this.data.xxx</code>。</p></div><a id="more"></a>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">//已在data中定义section</span></span><br><span class="line"><span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line"><span class="keyword">var</span> list = [{}];</span><br><span class="line">wx.request({</span><br><span class="line">      url: <span class="string">'https:（你所需要请求的地址）'</span>,</span><br><span class="line">      header: {</span><br><span class="line">        <span class="string">'content-type'</span>: <span class="string">'application/json'</span></span><br><span class="line">      },</span><br><span class="line">      method: <span class="string">'GET'</span>,</span><br><span class="line">      dataType: <span class="string">'json'</span>,</span><br><span class="line">      responseType: <span class="string">'text'</span>,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>{</span><br><span class="line">        <span class="keyword">if</span> (res.statusCode == <span class="number">200</span>) {</span><br><span class="line">          that.setData({</span><br><span class="line">            section: res.data</span><br><span class="line">          })  </span><br><span class="line">        }</span><br><span class="line">      }</span><br><span class="line">    })</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.data.section)<span class="comment">//输出结果为空，即原始定义</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><ul>
+<li><div class="note info"><p>直接将<code>this.data.section</code>的相关操作移到外部去。</p></div><figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line">createList(){</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.data.section)</span><br><span class="line">},</span><br><span class="line">onLoad(){</span><br><span class="line">    ……省略</span><br><span class="line">    success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>{</span><br><span class="line">        <span class="keyword">if</span> (res.statusCode == <span class="number">200</span>) {</span><br><span class="line">          that.setData({</span><br><span class="line">            section: res.data</span><br><span class="line">          })  </span><br><span class="line">        }</span><br><span class="line">        that.createList() <span class="comment">//输出为 section ，即res.data</span></span><br><span class="line">      }</span><br><span class="line">    ……省略</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="拓展思路"><a href="#拓展思路" class="headerlink" title="拓展思路"></a>拓展思路</h2><ul>
+<li><p></p><div class="note info"><p>如果需要创建数组，其实可以进行套用此方法</p></div><p></p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line">createlist(){</span><br><span class="line">    <span class="keyword">var</span> list = [{}];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.data.section.length; i++) {</span><br><span class="line">      list[i] = {};</span><br><span class="line">      list[i].name = <span class="built_in">String</span>.fromCharCode(<span class="number">65</span> + i);</span><br><span class="line">      list[i].id = i;</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">this</span>.setData({</span><br><span class="line">      list: list,</span><br><span class="line">      listCur: list[<span class="number">0</span>]</span><br><span class="line">    })</span><br><span class="line">  },</span><br><span class="line">  onLoad() {</span><br><span class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">    wx.request({</span><br><span class="line">      url: <span class="string">'https://（你所需要请求的地址）'</span>,</span><br><span class="line">      data: <span class="string">''</span>,</span><br><span class="line">      header: {</span><br><span class="line">        <span class="string">'content-type'</span>: <span class="string">'application/json'</span></span><br><span class="line">      },</span><br><span class="line">      method: <span class="string">'GET'</span>,</span><br><span class="line">      dataType: <span class="string">'json'</span>,</span><br><span class="line">      responseType: <span class="string">'text'</span>,</span><br><span class="line">      success: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>{</span><br><span class="line">        <span class="keyword">if</span> (res.statusCode == <span class="number">200</span>) {</span><br><span class="line">          <span class="comment">// console.log(res.data)</span></span><br><span class="line">          that.setData({</span><br><span class="line">            section: res.data</span><br><span class="line">          })  </span><br><span class="line">          that.createlist()</span><br><span class="line">        }</span><br><span class="line">      },</span><br><span class="line">      fail: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>{ },</span><br><span class="line">      complete: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>{ },</span><br><span class="line">    })</span><br><span class="line">    </span><br><span class="line">  },</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>此时<code>this.data.section</code>可用于<code>onLoad()</code>地方。简单来说，就是由此所产生的问题，可直接将需要进行的操作移到<code>onLoad()</code>外部，然后再进行调用。</p>
+</li>
+</ul>
+<blockquote>
+<p>好了就这样啦~~ψ(｀∇´)ψ</p>
+</blockquote>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>WEB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>有些话题，不适合当面讲</title>
+    <url>/2020/01/01/newyear/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote class="blockquote-center"><p>不过在戏台上罢了，<br>悲剧将人生的有价值的东西毁灭给人看，<br>喜剧将那无价值的撕破给人看。<br>讥讽又不过是喜剧的变简的一支流。<br>          ——鲁迅《再论雷峰塔的倒掉》</p>
+</blockquote>
+<a id="more"></a>
+<p></p><center>一</center><br>  有些人，嘴上说着调侃，实际上不知透露了多少真情实感。<br>  玩归玩，闹归闹，不拿真情开玩笑。大部分的调侃，其实只是一种刻意而并不露骨的提醒方式。它是一种试探，也是一种借口。能测量别人对自己的好感，得罪之处少了便得寸进尺，多了便甩出大锅。包容即是放肆，宽容即是恩宠。<br>  越是计较的人，越容易探知分寸。原则底线，班班可考，如同菜单，一目了然。<br>  越是大度的人，底线越难定界。原则或是底线，模糊不清，自己不说，别人永远不知道。<br>  越是能言善辞，越能精准把握得失之处。只是可惜，巧言令色，鲜矣人。或事无巨细，或锱铢必较，稂莠不齐。<br>  反而言之，就是普遍存在的“不会说话”。往往说错话或者未能说得一曲好话，都可能给自己带来麻烦。谈吐之间都是深思熟虑和举步维艰。<br>  语言也是艺术，只是我的艺术造就还没到能描述语言的“妙”。<p></p>
+<p></p><center>二（这只是草稿）</center><br>  天下唯庸人无咎无誉。<br>  你记得班上最优秀的同学，最差劲的同学，五花八门各显神通的同学，但往往不记得什么都很平常普通的同学。<br>  你不行动，我不心动。舒适圈内，皆为盲区。<p></p>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+      <categories>
+        <category>life</category>
+      </categories>
+      <tags>
+        <tag>Note</tag>
+        <tag>Life</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JavaScript入坑笔记（基础一）</title>
+    <url>/2019/09/24/javascript1/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="数据类型简介"><a href="#数据类型简介" class="headerlink" title="数据类型简介"></a>数据类型简介</h2><ul>
+<li><div class="note info no-icon"><p>ECMAScript中有5种简单数据类型（也称为基本数据类型）：Undefined、Null、Boolean、Number和String。还有1种复杂数据类型——Object，Object本质上是由一组无序的名值对组成的。ECMAScript不支持任何创建自定义类型的机制，而所有值最终都将是上述6种数据类型之一。数据类型具有动态性</p></div>
+
+</li>
+</ul>
+<h2 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h2><ul>
+<li><div class="note warning"><p>不能把关键字、保留字、true、false和null用作标识符</p></div>
+
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="关键字和保留字"><a href="#关键字和保留字" class="headerlink" title="关键字和保留字"></a>关键字和保留字</h2><ul>
+<li><div class="note info"><p>可用于表示控制语句的开始或结束，或者用于执行特定操作等。(仅列举ES5)</p></div><figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">//关键字:</span></span><br><span class="line"><span class="keyword">break</span>        <span class="keyword">do</span>            <span class="keyword">instanceof</span>        <span class="keyword">typeof</span>        <span class="keyword">case</span>          </span><br><span class="line"><span class="keyword">else</span>         <span class="keyword">new</span>           <span class="keyword">var</span>               <span class="keyword">catch</span>         <span class="keyword">finally</span>       </span><br><span class="line"><span class="keyword">return</span>       <span class="keyword">void</span>          <span class="keyword">continue</span>          <span class="keyword">for</span>           <span class="keyword">switch</span>        </span><br><span class="line"><span class="keyword">while</span>        <span class="keyword">debugger</span>      <span class="function"><span class="keyword">function</span>          <span class="title">this</span>          <span class="title">with</span>          </span></span><br><span class="line"><span class="function"><span class="title">default</span>      <span class="title">if</span>            <span class="title">throw</span>             <span class="title">delete</span>        <span class="title">in</span>            </span></span><br><span class="line"><span class="function"><span class="title">try</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">//保留字:</span></span><br><span class="line"><span class="function"><span class="title">abstract</span>     <span class="title">enum</span>          <span class="title">int</span>               <span class="title">short</span>         <span class="title">boolean</span>       </span></span><br><span class="line"><span class="function"><span class="title">export</span>       <span class="title">interface</span>     <span class="title">static</span>            <span class="title">extends</span>       <span class="title">long</span>           </span></span><br><span class="line"><span class="function"><span class="title">super</span>        <span class="title">char</span>          <span class="title">final</span>             <span class="title">native</span>        <span class="title">synchronized</span> </span></span><br><span class="line"><span class="function"><span class="title">class</span>        <span class="title">float</span>         <span class="title">package</span>           <span class="title">throws</span>        <span class="title">const</span>         </span></span><br><span class="line"><span class="function"><span class="title">goto</span>         <span class="title">private</span>       <span class="title">transient</span>         <span class="title">debugger</span>      <span class="title">implements</span>      </span></span><br><span class="line"><span class="function"><span class="title">protected</span>    <span class="title">volatile</span>      <span class="title">double</span>            <span class="title">import</span>        <span class="title">public</span> </span></span><br><span class="line"><span class="function"><span class="title">byte</span></span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><ul>
+<li><p></p><div class="note warning no-icon"><p>用var操作符定义的变量将成为定义该变量的作用域中的局部变量。在函数退出后，是会被销毁的</p></div><p></p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">//例如以下代码</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>{</span><br><span class="line">    <span class="keyword">var</span> message = <span class="string">"hi"</span>; <span class="comment">// 局部变量</span></span><br><span class="line">} </span><br><span class="line">test(); </span><br><span class="line">alert(message);         <span class="comment">// 错误！</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p></p><div class="note warning"><p>但如果不使用var定义，则会变成全局（不推荐）</p></div><p></p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>{</span><br><span class="line">    message = <span class="string">"hi"</span>;     <span class="comment">// 全局变量</span></span><br><span class="line">} </span><br><span class="line">test(); </span><br><span class="line">alert(message);         <span class="comment">// "hi"</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p></p><div class="note info"><p>可以使用一条语句定义多个变量</p></div><p></p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> message = <span class="string">"hi"</span>,     </span><br><span class="line">    found = <span class="literal">false</span>,     </span><br><span class="line">    age = <span class="number">29</span>;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><h3 id="typeof操作符"><a href="#typeof操作符" class="headerlink" title="typeof操作符"></a>typeof操作符</h3><ul>
+<li><div class="note info"><p>对一个值使用typeof操作符可能返回下列某个字符串：</p></div></li>
+<li>“undefined”——如果这个值未定义；</li>
+<li>“boolean”——如果这个值是布尔值；</li>
+<li>“string”——如果这个值是字符串；</li>
+<li>“number”——如果这个值是数值；</li>
+<li>“object”——如果这个值是对象或null；</li>
+<li><p>“function”——如果这个值是函数。</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> message = <span class="string">"some string"</span>; </span><br><span class="line">alert(<span class="keyword">typeof</span> message);     <span class="comment">// "string" </span></span><br><span class="line">alert(<span class="keyword">typeof</span>(message));    <span class="comment">// "string" </span></span><br><span class="line">alert(<span class="keyword">typeof</span> <span class="number">95</span>);          <span class="comment">// "number"</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><div class="note warning no-icon"><p>从技术角度讲，函数在ECMAScript中是对象，不是一种数据类型。然而，函数也确实有一些特殊的属性，因此通过typeof操作符来区分函数和其他对象是有必要的。</p></div>
+
+</li>
+</ul>
+<h3 id="Undefined类型"><a href="#Undefined类型" class="headerlink" title="Undefined类型"></a>Undefined类型</h3><ul>
+<li><div class="note info"><p>一般而言，不存在需要显式地把一个变量设置为undefined值的情况。字面值undefined的主要目的是用于比较</p></div></li>
+<li><div class="note warning no-icon"><p>即便未初始化的变量会自动被赋予undefined值，但显式地初始化变量依然是明智的选择。如果能够做到这一点，那么当typeof操作符返回”undefined”值时，我们就知道被检测的变量还没有被声明，而不是尚未初始化</p></div>
+
+</li>
+</ul>
+<h3 id="Null类型"><a href="#Null类型" class="headerlink" title="Null类型"></a>Null类型</h3><ul>
+<li><div class="note success"><p>从逻辑角度来看，null值表示一个空对象指针，而这也正是使用typeof操作符检测null值时会返回”object”的原因</p></div></li>
+<li><div class="note info"><p>实际上，undefined值是派生自null值的，因此对它们的相等性测试要返回true</p></div><figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line">ndefined == <span class="literal">null</span>    <span class="comment">//true</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h3 id="Boolean类型"><a href="#Boolean类型" class="headerlink" title="Boolean类型"></a>Boolean类型</h3><ul>
+<li><div class="note default no-icon"><p>true不一定等于1，而false也不一定等于0</p></div></li>
+<li><div class="note danger"><p>Boolean类型的字面值true和false是区分大小写的</p></div>
+
+</li>
+</ul>
+<h3 id="Number类型"><a href="#Number类型" class="headerlink" title="Number类型"></a>Number类型</h3><ul>
+<li><p></p><div class="note info"><p>浮点数值的最高精度是17位小数，但在进行算术计算时其精确度远远不如整数</p></div><p></p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> floatNum1 = <span class="number">1.1</span>; </span><br><span class="line"><span class="keyword">var</span> floatNum2 = <span class="number">0.1</span>; </span><br><span class="line"><span class="keyword">var</span> floatNum3 = <span class="number">.1</span>;  <span class="comment">// 有效，但不推荐</span></span><br><span class="line"><span class="keyword">var</span> floatNum1 = <span class="number">1.</span>;        <span class="comment">// 小数点后面没有数字——解析为1</span></span><br><span class="line"><span class="keyword">var</span> floatNum2 = <span class="number">10.0</span>;      <span class="comment">// 整数——解析为10</span></span><br><span class="line"><span class="keyword">var</span> floatNum = <span class="number">3.125e7</span>;  <span class="comment">// 等于31250000</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><div class="note danger"><p>0.1加0.2的结果不是0.3,因此，永远不要测试某个特定的浮点数值</p></div></li>
+<li><div class="note default no-icon"><p>NaN，即非数值（Not a Number）是一个特殊的数值，这个数值用于表示一个本来要返回数值的操作数未返回数值的情况（这样就不会抛出错误了）。任何数值除以0会返回NaN</p></div></li>
+<li><div class="note danger no-icon"><p>首先，任何涉及NaN的操作（例如NaN/10）都会返回NaN。其次，NaN与任何值都不相等，包括NaN本身。</p></div></li>
+<li><div class="note danger no-icon"><p>针对以上特点，定义了isNaN()函数。在基于对象调用isNaN()函数时，会首先调用对象的valueOf()方法，然后确定该方法返回的值是否可以转换为数值。如果不能，则基于这个返回值再调用toString()方法，再测试返回值。</p></div></li>
+<li><p>Number()</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num1 = <span class="built_in">Number</span>(<span class="string">"Hello world!"</span>);      <span class="comment">//NaN </span></span><br><span class="line"><span class="keyword">var</span> num2 = <span class="built_in">Number</span>(<span class="string">""</span>);                  <span class="comment">//0 </span></span><br><span class="line"><span class="keyword">var</span> num3 = <span class="built_in">Number</span>(<span class="string">"000011"</span>);            <span class="comment">//11 </span></span><br><span class="line"><span class="keyword">var</span> num4 = <span class="built_in">Number</span>(<span class="literal">true</span>);                <span class="comment">//1</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>parseInt()</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num1 = <span class="built_in">parseInt</span>(<span class="string">"1234blue"</span>);    <span class="comment">// 1234 </span></span><br><span class="line"><span class="keyword">var</span> num2 = <span class="built_in">parseInt</span>(<span class="string">""</span>);            <span class="comment">// NaN </span></span><br><span class="line"><span class="keyword">var</span> num3 = <span class="built_in">parseInt</span>(<span class="string">"0xA"</span>);         <span class="comment">// 10（十六进制数）</span></span><br><span class="line"><span class="keyword">var</span> num4 = <span class="built_in">parseInt</span>(<span class="number">22.5</span>);          <span class="comment">// 22 </span></span><br><span class="line"><span class="keyword">var</span> num5 = <span class="built_in">parseInt</span>(<span class="string">"070"</span>);         <span class="comment">// 56（八进制数）</span></span><br><span class="line"><span class="keyword">var</span> num6 = <span class="built_in">parseInt</span>(<span class="string">"70"</span>);          <span class="comment">// 70（十进制数）</span></span><br><span class="line"><span class="keyword">var</span> num7 = <span class="built_in">parseInt</span>(<span class="string">"0xf"</span>);         <span class="comment">// 15（十六进制数）</span></span><br><span class="line">***</span><br><span class="line"><span class="keyword">var</span> num1 = <span class="built_in">parseInt</span>(<span class="string">"10"</span>, <span class="number">2</span>);      <span class="comment">//2  （按二进制解析）</span></span><br><span class="line"><span class="keyword">var</span> num2 = <span class="built_in">parseInt</span>(<span class="string">"10"</span>, <span class="number">8</span>);      <span class="comment">//8  （按八进制解析）</span></span><br><span class="line"><span class="keyword">var</span> num3 = <span class="built_in">parseInt</span>(<span class="string">"10"</span>, <span class="number">10</span>);     <span class="comment">//10 （按十进制解析）</span></span><br><span class="line"><span class="keyword">var</span> num4 = <span class="built_in">parseInt</span>(<span class="string">"10"</span>, <span class="number">16</span>);     <span class="comment">//16 （按十六进制解析）</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>parseFloat()</p>
+<figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">//parseFloat()只解析十进制值</span></span><br><span class="line"><span class="keyword">var</span> num1 = <span class="built_in">parseFloat</span>(<span class="string">"1234blue"</span>);          <span class="comment">//1234 （整数）</span></span><br><span class="line"><span class="keyword">var</span> num2 = <span class="built_in">parseFloat</span>(<span class="string">"0xA"</span>);               <span class="comment">//0 </span></span><br><span class="line"><span class="keyword">var</span> num3 = <span class="built_in">parseFloat</span>(<span class="string">"22.5"</span>);              <span class="comment">//22.5 </span></span><br><span class="line"><span class="keyword">var</span> num4 = <span class="built_in">parseFloat</span>(<span class="string">"22.34.5"</span>);           <span class="comment">//22.34 </span></span><br><span class="line"><span class="keyword">var</span> num5 = <span class="built_in">parseFloat</span>(<span class="string">"0908.5"</span>);            <span class="comment">//908.5 </span></span><br><span class="line"><span class="keyword">var</span> num6 = <span class="built_in">parseFloat</span>(<span class="string">"3.125e7"</span>);           <span class="comment">//31250000</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h3 id="String类型"><a href="#String类型" class="headerlink" title="String类型"></a>String类型</h3><ul>
+<li><div class="note info no-icon"><p>任何字符串的长度都可以通过访问其length属性取得</p></div></li>
+<li><div class="note info no-icon"><p>字符串一旦创建，它们的值就不能改变。只能先销毁，后填充。</p></div><h4 id="toString-方法"><a href="#toString-方法" class="headerlink" title="toString()方法"></a>toString()方法</h4><figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> age = <span class="number">11</span>; </span><br><span class="line"><span class="keyword">var</span> ageAsString = age.toString();         <span class="comment">// 字符串"11" </span></span><br><span class="line"><span class="keyword">var</span> found = <span class="literal">true</span>; </span><br><span class="line"><span class="keyword">var</span> foundAsString = found.toString();     <span class="comment">// 字符串"true"</span></span><br><span class="line"><span class="comment">//****可以用于进制转换**********</span></span><br><span class="line"><span class="keyword">var</span> num = <span class="number">10</span>; </span><br><span class="line">alert(num.toString());         <span class="comment">// "10" </span></span><br><span class="line">alert(num.toString(<span class="number">2</span>));        <span class="comment">// "1010" </span></span><br><span class="line">alert(num.toString(<span class="number">8</span>));        <span class="comment">// "12" </span></span><br><span class="line">alert(num.toString(<span class="number">10</span>));       <span class="comment">// "10" </span></span><br><span class="line">alert(num.toString(<span class="number">16</span>));       <span class="comment">// "a"</span></span><br><span class="line"><span class="comment">//*****也会直接转换为返回结果*****</span></span><br><span class="line"><span class="keyword">var</span> value1 = <span class="number">10</span>; </span><br><span class="line"><span class="keyword">var</span> value2 = <span class="literal">true</span>; </span><br><span class="line"><span class="keyword">var</span> value3 = <span class="literal">null</span>; </span><br><span class="line"><span class="keyword">var</span> value4; </span><br><span class="line">alert(<span class="built_in">String</span>(value1));     <span class="comment">// "10" </span></span><br><span class="line">alert(<span class="built_in">String</span>(value2));     <span class="comment">// "true" </span></span><br><span class="line">alert(<span class="built_in">String</span>(value3));     <span class="comment">// "null" </span></span><br><span class="line">alert(<span class="built_in">String</span>(value4));     <span class="comment">// "undefined"</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h3 id="Object类型"><a href="#Object类型" class="headerlink" title="Object类型"></a>Object类型</h3><ul>
+<li><div class="note info "><p>对象，其实就是一组数据和功能的集合，需要new一个(你懂的)</p></div><figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line"><span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>; <span class="comment">// 有效，但不推荐省略圆括号</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h4 id="Object的每个实例都具有下列属性和方法"><a href="#Object的每个实例都具有下列属性和方法" class="headerlink" title="Object的每个实例都具有下列属性和方法"></a>Object的每个实例都具有下列属性和方法</h4><ul>
+<li>constructor：保存着用于创建当前对象的函数。对于前面的例子而言，构造函数（constructor）就是Object()。</li>
+<li>hasOwnProperty(propertyName)：用于检查给定的属性在当前对象实例中（而不是在实例的原型中）是否存在。其中，作为参数的属性名（propertyName）必须以字符串形式指定（例如：o.hasOwnProperty(“name”)）。</li>
+<li>isPrototypeOf(object)：用于检查传入的对象是否是传入对象的原型。</li>
+<li>propertyIsEnumerable(propertyName)：用于检查给定的属性是否能够使用for-in语句来枚举。与hasOwnProperty()方法一样，作为参数的属性名必须以字符串形式指定。</li>
+<li>toLocaleString()：返回对象的字符串表示，该字符串与执行环境的地区对应。</li>
+<li>toString()：返回对象的字符串表示。</li>
+<li>valueOf()：返回对象的字符串、数值或布尔值表示。通常与toString()方法的返回值相同。</li>
+</ul>
+<h3 id="关于javascript的趣向"><a href="#关于javascript的趣向" class="headerlink" title="关于javascript的趣向"></a>关于javascript的趣向</h3><figure class="highlight javascript"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">//可以直接f12尝试一下</span></span><br><span class="line">&gt; <span class="keyword">typeof</span>(<span class="literal">NaN</span>)</span><br><span class="line"><span class="string">"number"</span></span><br><span class="line">&gt; <span class="number">99999999999</span></span><br><span class="line"><span class="number">99999999999</span></span><br><span class="line">&gt; <span class="number">9999999999999999999</span></span><br><span class="line"><span class="number">10000000000000000000</span></span><br><span class="line">&gt; <span class="number">0.5</span>+<span class="number">0.1</span>==<span class="number">0.6</span></span><br><span class="line"><span class="literal">true</span></span><br><span class="line">&gt; <span class="number">0.1</span>+<span class="number">0.2</span>==<span class="number">0.3</span></span><br><span class="line"><span class="literal">false</span></span><br><span class="line">&gt; <span class="built_in">Math</span>.max()</span><br><span class="line">-<span class="literal">Infinity</span></span><br><span class="line">&gt; <span class="built_in">Math</span>.min()</span><br><span class="line"><span class="literal">Infinity</span></span><br><span class="line">&gt; []+[]</span><br><span class="line"><span class="string">""</span></span><br><span class="line">&gt; []+{}</span><br><span class="line"><span class="string">"[object Object]"</span></span><br><span class="line">&gt; {}+[]</span><br><span class="line"><span class="number">0</span></span><br><span class="line">&gt; <span class="literal">true</span>+<span class="literal">true</span>+<span class="literal">true</span>===<span class="number">3</span></span><br><span class="line"><span class="literal">true</span></span><br><span class="line">&gt; <span class="literal">true</span>-<span class="literal">true</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line">&gt; <span class="literal">true</span>==<span class="number">1</span></span><br><span class="line"><span class="literal">true</span></span><br><span class="line">&gt; <span class="literal">true</span>===<span class="number">1</span></span><br><span class="line"><span class="literal">false</span></span><br><span class="line">&gt; (!+[]+[]+![]).length</span><br><span class="line"><span class="number">9</span></span><br><span class="line">&gt; <span class="number">9</span>+<span class="string">"1"</span></span><br><span class="line"><span class="string">"91"</span></span><br><span class="line">&gt; <span class="number">91</span>-<span class="string">"1"</span></span><br><span class="line"><span class="number">90</span></span><br><span class="line">&gt; []==<span class="number">0</span></span><br><span class="line"><span class="literal">true</span></span><br><span class="line">&gt; (!(~+[])+{})[--[~+<span class="string">""</span>][+[]]*[~+[]] + ~~!+[]]+({}+[])[[~!+[]]*~+[]]</span><br><span class="line"><span class="string">"sb"</span></span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>好了就这样啦~~ψ(｀∇´)ψ</p>
+</blockquote>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+      <categories>
+        <category>技术</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>WEB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一些有趣的问题</title>
+    <url>/2019/02/26/falseofmath/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote class="blockquote-center"><p>不必太纠结于当下，也不必太忧虑未来，<br>当你经历过一些事情的时候，眼前的风景已经和从前不一样了。<br>          ——村上春树《1Q84》</p>
+</blockquote>
+<p></p><div class="note default"><p>如果觉得有巧妙的方法，请在<code>下方评论答案</code>或点击<a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2209502839&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener">发起对话</a>，也可以点击<a href="mailto:admin@puppetsheep.cn">发送邮箱</a>谢谢！</p></div><br><a id="more"></a><p></p>
+<h3 id="一、求-frac-x-y-z-frac-y-x-z-frac-z-x-y-4-的一个正整数解。"><a href="#一、求-frac-x-y-z-frac-y-x-z-frac-z-x-y-4-的一个正整数解。" class="headerlink" title="一、求$\frac{x}{y+z}+\frac{y}{x+z}+\frac{z}{x+y}=4$的一个正整数解。"></a>一、求$\frac{x}{y+z}+\frac{y}{x+z}+\frac{z}{x+y}=4$的一个正整数解。</h3><ul>
+<li>答案：<a href="https://zhuanlan.zhihu.com/p/33853851?utm_source=com.miui.notes&amp;utm_medium=social" target="_blank" rel="noopener">知乎链接</a></li>
+</ul>
+<h3 id="二、推理题"><a href="#二、推理题" class="headerlink" title="二、推理题"></a>二、推理题</h3><h4 id="1、这道题的答案是-nbsp"><a href="#1、这道题的答案是-nbsp" class="headerlink" title="1、这道题的答案是(&nbsp;)"></a>1、这道题的答案是(&nbsp;)</h4><p>A.A &nbsp; B.B &nbsp;  C.C &nbsp; D.D</p>
+<h4 id="2、第5題的答案是-nbsp"><a href="#2、第5題的答案是-nbsp" class="headerlink" title="2、第5題的答案是(&nbsp;)"></a>2、第5題的答案是(&nbsp;)</h4><p>A.C &nbsp; B.D &nbsp;  C.A &nbsp; D.B</p>
+<h4 id="3、以下选项中哪一题的答案与其它三项不同-nbsp"><a href="#3、以下选项中哪一题的答案与其它三项不同-nbsp" class="headerlink" title="3、以下选项中哪一题的答案与其它三项不同(&nbsp;)"></a>3、以下选项中哪一题的答案与其它三项不同(&nbsp;)</h4><p>A、第3题 &nbsp; B、第6题 &nbsp; C、第2题 &nbsp; D、第4题</p>
+<h4 id="4、以下选项中哪两题的答案相同（-nbsp-）"><a href="#4、以下选项中哪两题的答案相同（-nbsp-）" class="headerlink" title="4、以下选项中哪两题的答案相同（&nbsp;）"></a>4、以下选项中哪两题的答案相同（&nbsp;）</h4><p>A、第1、5题 &nbsp; B、第2、7题 &nbsp; C、第1、9韙 &nbsp; D、第6、10题</p>
+<h4 id="5、以下选项中哪一題的答案与本題相同（-nbsp-）"><a href="#5、以下选项中哪一題的答案与本題相同（-nbsp-）" class="headerlink" title="5、以下选项中哪一題的答案与本題相同（&nbsp;）"></a>5、以下选项中哪一題的答案与本題相同（&nbsp;）</h4><p>A、第8题 &nbsp; B、第4題 &nbsp; C、第9题 &nbsp; D、第7题</p>
+<h4 id="6、以下选项中哪两题的答案与第8題相同（-nbsp-）"><a href="#6、以下选项中哪两题的答案与第8題相同（-nbsp-）" class="headerlink" title="6、以下选项中哪两题的答案与第8題相同（&nbsp;）"></a>6、以下选项中哪两题的答案与第8題相同（&nbsp;）</h4><p>A、第2、4题 &nbsp; B、第1、6题 &nbsp; C、第3、10题 &nbsp; D、第5、9题</p>
+<h4 id="7、在此十道题中，被选择次数最少的选项字母为（-nbsp-）"><a href="#7、在此十道题中，被选择次数最少的选项字母为（-nbsp-）" class="headerlink" title="7、在此十道题中，被选择次数最少的选项字母为（&nbsp;）"></a>7、在此十道题中，被选择次数最少的选项字母为（&nbsp;）</h4><p>A.C &nbsp; B.B &nbsp;  C.A &nbsp; D.D</p>
+<h4 id="8、以下选项中哪一題的答案与第1题的答案在字母表中不相邻（-nbsp-）"><a href="#8、以下选项中哪一題的答案与第1题的答案在字母表中不相邻（-nbsp-）" class="headerlink" title="8、以下选项中哪一題的答案与第1题的答案在字母表中不相邻（&nbsp;）"></a>8、以下选项中哪一題的答案与第1题的答案在字母表中不相邻（&nbsp;）</h4><p>A、第7题 &nbsp; B、第5题 &nbsp; C、第2题 &nbsp; D、第10题</p>
+<h4 id="9、己知“第1题与第6题的答案相同”与“第X题与第5题的答案相同”的真假性相反，那么X为-nbsp"><a href="#9、己知“第1题与第6题的答案相同”与“第X题与第5题的答案相同”的真假性相反，那么X为-nbsp" class="headerlink" title="9、己知“第1题与第6题的答案相同”与“第X题与第5题的答案相同”的真假性相反，那么X为(&nbsp;)"></a>9、己知“第1题与第6题的答案相同”与“第X题与第5题的答案相同”的真假性相反，那么X为(&nbsp;)</h4><p>A、第6题 &nbsp; B、第10题 &nbsp; C、第2题 &nbsp; D、第9題</p>
+<h4 id="10、在此十道题中，AD四个字母中出现的次数最多者与最少者的差为（-nbsp-）"><a href="#10、在此十道题中，AD四个字母中出现的次数最多者与最少者的差为（-nbsp-）" class="headerlink" title="10、在此十道题中，AD四个字母中出现的次数最多者与最少者的差为（&nbsp;）"></a>10、在此十道题中，AD四个字母中出现的次数最多者与最少者的差为（&nbsp;）</h4><p>A.3 &nbsp; B.2 &nbsp;  C.4 &nbsp; D.1</p>
+<h4 id="本试题的答案为"><a href="#本试题的答案为" class="headerlink" title="本试题的答案为"></a>本试题的答案为</h4><hr>
+<h4 id="简述推理过程"><a href="#简述推理过程" class="headerlink" title="简述推理过程"></a>简述推理过程</h4><hr>
+<script>
+        document.querySelectorAll('.github-emoji')
+          .forEach(el => {
+            if (!el.dataset.src) { return; }
+            const img = document.createElement('img');
+            img.style = 'display:none !important;';
+            img.src = el.dataset.src;
+            img.addEventListener('error', () => {
+              img.remove();
+              el.style.color = 'inherit';
+              el.style.backgroundImage = 'none';
+              el.style.background = 'none';
+            });
+            img.addEventListener('load', () => {
+              img.remove();
+            });
+            document.body.appendChild(img);
+          });
+      </script>]]></content>
+      <categories>
+        <category>study</category>
+      </categories>
+      <tags>
+        <tag>Math</tag>
+        <tag>Note</tag>
+      </tags>
+  </entry>
+</search>

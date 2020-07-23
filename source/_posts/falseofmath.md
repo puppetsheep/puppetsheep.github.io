@@ -18,6 +18,8 @@ description:
 <div class="note default"><p>如果觉得有巧妙的方法，请在`下方评论答案`或点击<a href="http://wpa.qq.com/msgrd?v=3&uin=2209502839&site=qq&menu=yes">发起对话</a>，也可以点击<a href="mailto:admin@puppetsheep.cn">发送邮箱</a>谢谢！</p></div>
 <!-- more -->
 ### 一、求$\frac{x}{y+z}+\frac{y}{x+z}+\frac{z}{x+y}=4$的一个正整数解。
+- 答案：[知乎链接](https://zhuanlan.zhihu.com/p/33853851?utm_source=com.miui.notes&utm_medium=social)
+
 ### 二、推理题
 #### 1、这道题的答案是(&nbsp;)
 A.A &nbsp; B.B &nbsp;  C.C &nbsp; D.D

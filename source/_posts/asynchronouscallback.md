@@ -1,4 +1,4 @@
-title: 微信小程序异步回调解决方案
+title: 微信小程序request异步问题解决方案
 author: puppetsheep
 tags:
   - JavaScript
@@ -13,7 +13,7 @@ date: 2020-5-19 01:10:10
 ---
 
 ## 问题简介
-- <div class="note info no-icon"><p>在`onLoad()`的同时又需要控制一个新定义的数组长度，此时会存在`wx.request()`的异步回调问题，即无法取到`this.data.xxx`。</p></div>
+- <div class="note info no-icon"><p>在`onLoad()`的同时又需要控制一个新定义的数组长度，此时会存在`wx.request()`的异步问题，即无法取到`this.data.xxx`。</p></div>
 <!-- more -->
 ```javascript
 //已在data中定义section
@@ -99,6 +99,6 @@ createlist(){
     
   },
 ```
-- 此时`this.data.section`可用于`onLoad()`地方。简单来说，就是由异步回调所产生的问题，可直接将需要进行的操作移到`onLoad()`外部，然后再进行调用。
+- 此时`this.data.section`可用于`onLoad()`地方。简单来说，就是由此所产生的问题，可直接将需要进行的操作移到`onLoad()`外部，然后再进行调用。
 
 > 好了就这样啦~~ψ(｀∇´)ψ

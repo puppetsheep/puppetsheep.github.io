@@ -1,6 +1,6 @@
 
-var cacheName = 'bs-0-1-1'
-var apiCacheName = 'api-0-1-1'
+var cacheName = 'bs-0-3-1'
+var apiCacheName = 'api-0-3-1'
 
 var cacheFiles = [
   '/',
@@ -10,6 +10,7 @@ var cacheFiles = [
   '/js/src/utils.js',
   '/js/src/motion.js',
   '/js/src/bootstrap.js',
+  '/js/src/jquery-3.3.1.min.js',
   '/images/icons/icon_32.png',
   '/images/icons/icon_72.png',
   '/images/icons/icon_128.png',

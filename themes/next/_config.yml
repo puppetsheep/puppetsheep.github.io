@@ -72,7 +72,7 @@ site_state: true
 
 social:
   GitHub: https://github.com/puppetsheep || github
-  E-Mail: mailto:admin@puppetsheep.cn || envelope
+  E-Mail: mailto:puppetsheep@foxmail.com || envelope
   微博: https://weibo.com/u/6241927108 || weibo
   QQ: http://wpa.qq.com/msgrd?v=3&uin=2209502839&site=qq&menu=yes || qq
 
@@ -396,12 +396,12 @@ pace_theme: pace-theme-minimal
 vendors:
   _internal: lib
 
-  jquery: //code.jquery.com/jquery-3.3.1.min.js
+  jquery: /js/src/jquery-3.3.1.min.js
 
-  fancybox: https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js
-  fancybox_css: https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css
+  fancybox: https://lib.baomitu.com/fancybox/3.2.5/jquery.fancybox.min.js
+  fancybox_css: https://lib.baomitu.com/fancybox/3.2.5/jquery.fancybox.min.css
 
-  fastclick: //cdn.jsdelivr.net/npm/fastclick@1/lib/fastclick.min.js
+  fastclick: https://lib.baomitu.com/fastclick/1.0.6/fastclick.min.js
   # fastclick: //cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js
 
   lazyload: //cdn.jsdelivr.net/npm/jquery-lazyload@1/jquery.lazyload.min.js
@@ -501,7 +501,7 @@ mylinks:
 
 - nickname: zhangpeng2k
   site: https://zhangpeng2k.github.io
-  info: 初级前端
+  info: Die Job Death Car?
   avatar: https://avatars2.githubusercontent.com/u/32725281?s=460&v=4
 
 # - nickname: MXYLR Mother Base
@@ -518,3 +518,8 @@ mylinks:
   site: https://onetuzi.cn/
   info: ♥愿有一天能和你最重要的人重逢
   avatar: https://i.loli.net/2019/07/27/5d3bf538d0c1e60286.jpg
+
+- nickname: WuGenQiang's NoteBook
+  site: https://notebook.js.org/
+  info: Sometimes your whole life boils down to one insame move.
+  avatar: https://wugenqiang.github.io/images/fighting_wugenqiang.jpg
